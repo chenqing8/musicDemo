@@ -1,16 +1,25 @@
 <template>
   <div id="app">
-    <keep-alive>
-    <router-view />
-    </keep-alive>
-    <Footer/>
+    <SongDetial class="songDetial" />
+    <div>
+      <router-view />
+      <Footer />
+    </div>
   </div>
 </template>
  <script>
+import MusicMixins from "./store/mixins";
 import Footer from "./components/common/footer";
+import SongDetial from "./views/songDetial";
 export default {
+  mixins: [MusicMixins],
   components: {
-    Footer
+    Footer,
+    SongDetial
+  },
+  mounted() {
+    // this.setplayState(false);
+    // this.setfullScreen(false);
   }
 };
 document.addEventListener("DOMContentLoaded", () => {
@@ -32,7 +41,5 @@ document.addEventListener("DOMContentLoaded", () => {
   box-sizing: border-box;
 }
 #app {
-
-  
 }
 </style>

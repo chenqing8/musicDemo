@@ -58,7 +58,7 @@
           <li class="item" v-for="(item,index) in songDetialList.tracks" :key="index">
             <div class="itemLeft">
               <span class="order">{{index+1}}</span>
-              <div class="songitem">
+              <div class="songitem" @click="getSongDetial(index)">
                 <p class="songitemtitle">
                   <span class="title">{{item.name}}</span>
                   <span v-if="item.alia.length">({{item.alia[0]}})</span>
@@ -113,7 +113,8 @@ export default {
       creatorDetialList: {},
       subscribers: {},
       modleShow: false,
-      userInfoList: {}
+      userInfoList: {},
+      songList: {}
     };
   },
   components: {
@@ -133,6 +134,7 @@ export default {
       this.$httpget("playlist/detail?id=" + id).then(res => {
         let data = res.data.playlist;
         this.songDetialList = data;
+        this.songList = data.tracks;
         this.creatorDetialList = data.creator;
         this.subscribers = data.subscribers.slice(0, 5);
         this.userInfoList = {
@@ -145,11 +147,60 @@ export default {
     },
     showUserInfo() {
       this.SETUSERINFOSTATE(true);
+    },
+    formatLrc(lrc) {
+      return lrc.replace("/[(w*:w*).w*]/g", "");
+    },
+    /**获取歌曲信息
+     * @name: getSongUrlData
+     * @param {id} 歌曲的id
+     * @param {listId} 当前点击列表的id
+     * @return: 新的歌曲信息，放在vuex中
+     */
+    getSongUrlData(id, listId) {
+      this.$httpget("song/url?id=" + id).then(res => {
+        let data = res.data.data[0];
+        let songUrlData = [];
+        this.$httpget("lyric?id=" + id).then(res1 => {
+          let lyric = res1.data.lrc.lyric;
+          lyric = lyric.replace(/\[(\w*\:\w*)\.\w*\]|\-/g, "");
+          songUrlData.push({
+            id: data.id /* 歌曲的id */,
+            url: data.url /* 歌曲的播放地址 */,
+            br: data.br /* 音质 */,
+            size: data.size /* 文件大小 */,
+            songname: this.songList[listId].name /* 歌曲名字 */,
+            CD: this.songList[listId].al.picUrl /* 光盘背景 */,
+            authorname: this.songList[listId].ar[0].name /* 演唱者名字 */,
+            lrc: lyric /* 歌词 */,
+            dt: this.songList[listId].dt /* 歌曲时长 */
+          });
+          localStorage.setItem(
+            "playList",
+            JSON.stringify(this.playList.concat(songUrlData))
+          );
+          localStorage.setItem("playIndex", this.playList.length);
+          this.setplayIndex(this.playList.length);
+          this.setplayList(this.playList.concat(songUrlData));
+          this.setplayState(true);
+          this.setfullScreen(true);
+        });
+      });
+    },
+    getSongDetial(id) {
+      let songId = this.songList[id].id;
+      this.getSongUrlData(songId, id);
     }
   },
   mounted() {
     let id = this.$route.params.id;
     this.getSongListData(id);
+    let platList = JSON.parse(localStorage.getItem("playList"));
+    let platIndex = localStorage.getItem("playIndex");
+    if (platList) this.setplayList(platList);
+    else this.setplayList([]);
+    if (platIndex) this.setplayIndex(platIndex);
+    else this.setplayIndex(-1);
   }
 };
 </script>
@@ -202,6 +253,7 @@ export default {
             top: 0;
             right: 0;
             left: 0;
+            border-radius: 10px 10px 0 0;
             height: 30px;
             background: linear-gradient(
               to bottom,

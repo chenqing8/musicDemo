@@ -11,6 +11,11 @@ export default new Router({
       redirect: '/find'
     },
     {
+      path:'/songDetial',
+      name:'songDetial',
+      component: () => import('./views/songDetial.vue'),
+    },
+    {
       path: '/find',
       name: 'find',
       component: () => import('./views/find.vue'),

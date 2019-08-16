@@ -1,65 +1,74 @@
 <template>
   <div class="songDetial" v-if="songData">
-    <div v-if="fullScreen">
-      <div class="bgParent">
-        <div
-          class="bg"
-          :style="{'background-image':'url('+songData.CD+')','backgroundSize': '100% 100%', 'filter': 'blur(15px)'}"
-        ></div>
-        <div class="bgShadow" :style="{'background': 'rgba(150,150,150,.4)'}"></div>
-      </div>
-      <div class="songDetial_warper">
-        <div class="header_warper">
-          <span class="iconfont icon" @click="goBack">&#xe641;</span>
-          <div class="title_warper">
-            <span class="title">{{songData.songname}}</span>
-            <span class="author">{{songData.authorname}}</span>
+      <div v-if="fullScreen">
+        <div class="bgParent">
+          <div
+            class="bg"
+            v-if="songData.CD"
+            :style="{'background-image':'url('+songData.CD+')','backgroundSize': '100% 100%', 'filter': 'blur(15px)'}"
+          ></div>
+          <div class="bgShadow"></div>
+        </div>
+        <div class="songDetial_warper">
+          <div class="header_warper">
+            <span class="iconfont icon" @click="goBack">&#xe641;</span>
+            <div class="title_warper">
+              <span class="title">{{songData.songname}}</span>
+              <span class="author">{{songData.authorname}}</span>
+            </div>
+            <span class="iconfont icon">&#xe60f;</span>
           </div>
-          <span class="iconfont icon">&#xe60f;</span>
-        </div>
-        <div v-show="!lrcState" @click="lrcState=true" class="CD_warper">
-          <img class="pointer" src="../assets/img/needle-ip6.png" alt />
-          <div :class="CDbox">
-            <img class="CD" :src="songData.CD" alt />
+          <div v-show="!lrcState" @click="lrcState=true" class="CD_warper">
+            <img :class="pointer" src="../assets/img/needle-ip6.png" alt />
+            <div :class="CDbox">
+              <img class="CD" :src="songData.CD" alt />
+            </div>
           </div>
+          <div v-show="lrcState" @click="lrcState=false" class="lrc_warper">
+            <div class="lrcText" ref="lyricList">
+              <p
+                v-for="(item,index) in lyricList"
+                :key="index"
+                :class="{'active':lrcIndex==index}"
+                ref="lyricItem"
+              >{{item.txt}}</p>
+            </div>
+          </div>
+          <div class="menu_warper">
+            <span class="iconfont icon">&#xe60a;</span>
+            <span class="iconfont icon">&#xe628;</span>
+            <span class="iconfont icon">&#xe600;</span>
+            <span class="iconfont icon">&#xe6d3;</span>
+            <span class="iconfont icon">&#xe634;</span>
+          </div>
+          <div class="songPro_warper">
+            <span class="time">{{timeFormat(currentTime)}}</span>
+            <input
+              class="range"
+              type="range"
+              ref="range"
+              min="0"
+              max="100"
+              step="1"
+              :value="progrose"
+              @change="onProgressChange($event.target.value)"
+              @input="onProgressInput($event.target.value)"
+            />
+            <span class="time">{{jsDateTimeFormat(songData.dt)}}</span>
+          </div>
+          <div class="songMenu_warper">
+            <span class="iconfont icon" @click="playingModel">{{modelList[playModel]}}</span>
+            <span class="iconfont icon" @click="perSong(ListIndex)">&#xe78a;</span>
+            <span class="iconfont play" @click="playing">{{playIcon}}</span>
+            <span class="iconfont icon" @click="nextSong(ListIndex)">&#xe7a5;</span>
+            <span class="iconfont icon" @click="setsongListState(true)">&#xe737;</span>
+          </div>
+          <SideUp>
+            <SongList :playlist="playList" :playindex="playIndex" v-if="songListState"></SongList>
+          </SideUp>
         </div>
-        <div v-show="lrcState" @click="lrcState=false" class="lrc_warper">
-          <pre class="lrcText">
-          {{songData.lrc}}
-        </pre>
-        </div>
-        <div class="menu_warper">
-          <span class="iconfont icon">&#xe60a;</span>
-          <span class="iconfont icon">&#xe628;</span>
-          <span class="iconfont icon">&#xe600;</span>
-          <span class="iconfont icon">&#xe6d3;</span>
-          <span class="iconfont icon">&#xe634;</span>
-        </div>
-        <div class="songPro_warper">
-          <span class="time">{{timeFormat(currentTime)}}</span>
-          <input
-            class="range"
-            type="range"
-            min="0"
-            max="100"
-            step="1"
-            :style="{'background-image': 'linear-gradient(90deg, #fff 10%, #999 90%)'}"
-          />
-          <span class="time">{{jsDateTimeFormat(songData.dt)}}</span>
-        </div>
-        <div class="songMenu_warper">
-          <span class="iconfont icon">&#xe66d;</span>
-          <span class="iconfont icon" @click="perSong(playIndex)">&#xe78a;</span>
-          <span class="iconfont play" @click="playing">{{playIcon}}</span>
-          <span class="iconfont icon" @click="nextSong(playIndex)">&#xe7a5;</span>
-          <span class="iconfont icon" @click="setsongListState(true)">&#xe737;</span>
-        </div>
-        <SideUp>
-          <SongList :playlist="playList" :playindex="playIndex" v-if="songListState"></SongList>
-        </SideUp>
       </div>
-    </div>
-    <audio ref="audio" :src="songData.url" @timeupdate="timeUpData"></audio>
+    <audio ref="audio" :src="songData.url" @timeupdate="timeUpData" @ended="ended" :loop="loop"></audio>
   </div>
 </template>
 
@@ -68,13 +77,23 @@ import MusicMixins from "../store/mixins";
 import FadeIn from "../components/transition/fadeIn";
 import SideUp from "../components/transition/sideUp";
 import SongList from "../components/song/songlist";
+import Lyric from "lyric-parser";
+
 export default {
   name: "songDetial",
   mixins: [MusicMixins],
   data() {
     return {
-      lrcState: false,
-      currentTime: 0
+      lrcState: false /* 歌词是否显示的状态 */,
+      currentTime: 0 /* 歌曲当前播放的时间 */,
+      lrcIndex: 0 /* 当前歌词所在行数 */,
+      lyric: null /* 歌词解析生成的对象 */,
+      lyricList: [] /* 歌词 */,
+      progrose: 0 /* 进度 */,
+      flag: true /* 用来拖动进度条时使用 */,
+      modelList: ["\ue66d", "\ue66e", "\ue66c"] /* 播放模式的图标 */,
+      loop: false,
+      songData: {}
     };
   },
   components: {
@@ -86,20 +105,25 @@ export default {
     playIcon() {
       return this.playState ? "\ue670" : "\ue626";
     },
-    songData() {
-      return this.playList[this.playIndex];
-    },
+    // songData() {
+    //   return this.playList[this.playIndex];
+    // },
     CDbox() {
-      return this.playState ? "CDbox rotate" : "CDbox";
+      return this.playState ? "CDbox " : "CDbox pause";
+    },
+    pointer() {
+      return this.playState ? "pointer" : "pointer pointerrotate";
     }
   },
   methods: {
     playing() {
       if (this.playState) {
         this.$refs.audio.pause();
+        this.lyric.togglePlay();
         this.setplayState(false);
       } else {
         this.$refs.audio.play();
+        this.lyric.togglePlay();
         this.setplayState(true);
       }
     },
@@ -107,21 +131,80 @@ export default {
       this.setfullScreen(false);
     },
     perSong(id) {
-      if (this.playIndex === 0) {
+      this.lrcState = false;
+      if (this.ListIndex === 0) {
         id = this.playList.length;
       }
-      localStorage.setItem("playIndex", --id);
-      this.setplayIndex(--id);
+      id = id - 1;
+      let playIndex = this.playList[id].id;
+      localStorage.setItem("playIndex", playIndex);
+      this.setplayIndex(playIndex);
+      this.setListIndex(id);
+      this.setplayState(true);
     },
     nextSong(id) {
-      if (this.playIndex === this.playList.length - 1) {
+      this.lrcState = false;
+      if (this.ListIndex === this.playList.length - 1 || this.ListIndex < 0) {
         id = -1;
       }
-      localStorage.setItem("playIndex", ++id);
-      this.setplayIndex(++id);
+      id = id + 1;
+      let playIndex = this.playList[id].id;
+      localStorage.setItem("playIndex", playIndex);
+      this.setplayIndex(playIndex);
+      this.setListIndex(id);
+      this.setplayState(true);
+    },
+    getLyricData() {
+      if (this.lyric) {
+        this.lyric.stop();
+      }
+      this.lyric = null;
+      this.$httpget("lyric?id=" + this.playIndex).then(res1 => {
+        let lyr = res1.data.lrc;
+        if (!lyr) {
+          return;
+        } else {
+          let lyrs = lyr.lyric;
+          this.lyric = new Lyric(lyrs, ({ lineNum, txt }) => {
+            // console.log(lineNum);
+            this.lrcIndex = lineNum;
+            // let titleNames = $(".lrcText>p");
+            // let sTop = titleNames.eq(lineNum)[0].offsetTop;
+            // $(".lrcText").animate({ scrollTop: '100px' }, 1000);
+            // document.getElementsByClassName("lrcText").scrollTo='100px'
+            // this.$refs.lyricList.animate({ scrollTop: "500px" }, 1000);
+          });
+          this.lyricList = this.lyric.lines;
+          this.lyric.play();
+        }
+      });
+    },
+    range(p) {
+      this.flag = false;
+      this.progrose = Number(p);
+      this.$refs.range.style.backgroundSize = `${this.progrose}%, 100%`;
+      let time = (p / 100) * this.songData.dt;
+      let audiocurenTime = time / 1000; /* audio的时间需要除以1000 */
+      this.$refs.audio.currentTime = audiocurenTime;
+      if (this.lyric !== null) {
+        this.lyric.seek(time); /* 歌词生成的时间是js的时间戳，不用除1000 */
+      }
+      this.flag = true;
+    },
+    onProgressChange(p) {
+      this.range(p);
+    },
+    onProgressInput(p) {
+      this.range(p);
     },
     timeUpData(e) {
       this.currentTime = e.target.currentTime;
+      let audioTime = (e.target.currentTime * 1000) | 0;
+      if (this.flag && this.fullScreen) {
+        this.progrose =
+          (((e.target.currentTime * 1000) | 0) / this.songData.dt) * 100;
+        this.$refs.range.style.backgroundSize = `${this.progrose}%, 100%`;
+      }
     },
     add0(nums) {
       let length = nums.toString().length;
@@ -141,17 +224,61 @@ export default {
       let min = Math.floor(currentTime / 60) % 60;
       let sec = parseInt(currentTime % 60);
       return `${this.add0(min)}:${this.add0(sec)}`;
+    },
+    /**audio自带的判断歌曲结束函数
+     * @name: ended
+     * @param {null}
+     * @return:
+     */
+    ended() {
+      this.nextSong(this.ListIndex);
+    },
+    playingModel() {
+      this.loop = false;
+      switch (this.playModel) {
+        case 0 /* 当前是顺序播放，下一个是单曲循环 */:
+          this.loop = true;
+          this.setplayModel(1);
+          break;
+        case 1 /* 当前是单曲循环，下一个是随机播放 */:
+          this.setplayModel(2);
+          break;
+        case 2 /* 当前是随机播放，下一个是顺序播放 */:
+          this.setplayModel(0);
+          break;
+      }
+    },
+    getsongUrlData() {
+      this.$httpget("song/url?id=" + this.playIndex).then(res => {
+        let data = res.data.data[0];
+        this.songData = {
+          id: data.id /* 歌曲的id */,
+          url: data.url /* 歌曲的播放地址 */,
+          br: data.br /* 音质 */,
+          size: data.size /* 文件大小 */,
+          songname: this.playList[this.ListIndex].name /* 歌曲名字 */,
+          CD: this.playList[this.ListIndex].al.picUrl /* 光盘背景 */,
+          authorname: this.playList[this.ListIndex].ar[0].name /* 演唱者名字 */,
+          dt: this.playList[this.ListIndex].dt /* 歌曲时长 */
+        };
+      });
     }
   },
   watch: {
     fullScreen() {
       this.lrcState = false;
+      this.getsongUrlData();
+      this.getLyricData();
     },
-    playIndex(now) {
+    playIndex() {
       if (this.playState) {
         this.$nextTick(() => {
-          this.$refs.audio.play();
-          this.setplayState(true);
+          this.getsongUrlData();
+          this.getLyricData();
+          setTimeout(() => {
+            /* 数据加载完成后但是还是不能够播放音乐，就此解决 */
+            this.$refs.audio.play();
+          }, 200);
         });
       }
     }
@@ -192,6 +319,7 @@ export default {
       background-size: 100% 100%;
       background-origin: center;
       z-index: 100;
+      background: #aaa;
     }
     .bgShadow {
       position: absolute;
@@ -199,8 +327,8 @@ export default {
       right: 0;
       left: 0;
       bottom: 0;
-
       z-index: 102;
+      background: rgba($color: #888, $alpha: 0.4);
     }
   }
   .songDetial_warper {
@@ -245,6 +373,10 @@ export default {
         height: 36%;
         z-index: 102;
       }
+      .pointerrotate {
+        transform-origin: 10px 0;
+        transform: rotate(-15deg);
+      }
       .CDbox {
         position: absolute;
         top: calc(50% - 150px);
@@ -253,9 +385,10 @@ export default {
         height: 300px;
         background-image: url("../assets/img/disc-ip6.png");
         background-size: 100% 100%;
-      }
-      .rotate {
         animation: CDRotate 15s infinite linear;
+      }
+      .pause {
+        animation-play-state: paused;
       }
       .CD {
         width: 185px;
@@ -275,6 +408,10 @@ export default {
         color: #eee;
         text-align: center;
         line-height: 26px;
+        .active {
+          color: #fff;
+          font-size: 13px;
+        }
       }
     }
     .menu_warper {
@@ -296,6 +433,8 @@ export default {
       .range {
         flex: 1;
         margin: 0 7px;
+        background: linear-gradient(#fff, #999) no-repeat, #999; /*设置左边颜色为#61bd12，右边颜色为#ddd*/
+        background: -webkit-linear-gradient(#fff, #999) no-repeat, #999; /*设置左边颜色为#61bd12，右边颜色为#ddd*/
       }
       input[type="range"] {
         -webkit-appearance: none;

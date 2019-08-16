@@ -24,7 +24,6 @@ export default {
   computed: {},
   methods: {
     goSongDetial() {
-      console.log(123);
       this.setfullScreen(true);
     }
   },

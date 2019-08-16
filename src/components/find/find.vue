@@ -2,7 +2,7 @@
   <div class="Find">
     <Header>
       <HeaderLeft />
-      <HeaderLeftFocuse />
+      <!-- <HeaderLeftFocuse /> -->
     </Header>
     <Scroll>
       <div class="banner">
@@ -47,7 +47,7 @@ export default {
         /* slider的配置 */
         pagination: true,
         grabCursor: true, // Scratch style
-         thresholdDistance: 100, // 滑动距离阈值判定
+        thresholdDistance: 100, // 滑动距离阈值判定
         thresholdTime: 300, // 滑动时间阈值判定
         autoplay: 3000,
         loop: true,
@@ -96,7 +96,7 @@ export default {
   computed: {},
   methods: {
     onTap(data) {
-      this.$router.push({ path: "/v" });
+      window.history.pushState(url);
     },
     slide(data) {},
     /**获取banner数据

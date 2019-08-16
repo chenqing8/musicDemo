@@ -3,20 +3,20 @@
     <div class="bg" @click="close" v-if="songListState"></div>
     <div class="song_warper">
       <div class="title">
-        <span>士大夫</span>
-        <span>士大夫</span>
+        <span>播放列表</span>
+        <span class="iconfont icon">&#xe659;</span>
       </div>
       <ul class="list_warper">
         <li
           class="item"
           v-for="(item,index) in playlist"
           :key="index"
-          :class="{'active':playindex===index}"
-          @click="getSongDetial(index)"
+          :class="{'active':playindex===item.id}"
+          @click="getSongDetial(item.id,index)"
         >
-          <span class="iconfont icon" v-show="playindex===index">&#xe682;</span>
-          <span class="text">{{item.songname}}</span>
-          <span class="iconfont icon1">&#xe627;</span>
+          <span class="iconfont icon" v-show="playindex===item.id">&#xe682;</span>
+          <span class="text">{{item.name}}</span>
+          <span class="iconfont icon1" @click="cancel(index)">&#xe627;</span>
         </li>
       </ul>
       <div class="close" @click="close">关闭</div>
@@ -36,11 +36,17 @@ export default {
   components: {  },
   computed: {},
   methods: {
-    getSongDetial(id) {
-      this.setplayIndex(id);
+    getSongDetial(id,index) {
+      this.setplayIndex(id);/* 歌曲id编号 */
+      this.setListIndex(index)/* 序号 */
+      this.setplayState(true);
     },
     close() {
       this.setsongListState(false);
+    },
+    cancel(id){
+      let playList=this.playList.slice(id,1);
+      this.setplayList(playList);
     }
   },
   mounted() {}

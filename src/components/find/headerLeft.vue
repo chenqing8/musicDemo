@@ -26,7 +26,10 @@ export default {
   computed: {},
   methods: {
     changeState() {
-      this.SETSEARCHSTATE(true);
+      this.$router.push({ name: "search" });
+      setTimeout(() => {
+        this.SETSEARCHSTATE(true);
+      }, 20);
     }
   },
   mounted() {}

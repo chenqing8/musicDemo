@@ -39,7 +39,7 @@ export default {
       // this.searchValue = event.currentTarget.value;
     },
     changeState() {
-      this.$router.push({name:'home'})
+      this.$router.go(-1);
       setTimeout(() => {
         this.SETSEARCHSTATE(false);
         this.setsearchKey("");

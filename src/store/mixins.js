@@ -15,13 +15,16 @@ const MusicMixins = {
       "playModel",
       "playIndex",
       "songListState",
-      "fullScreen"
+      "fullScreen",
+      "lyricObj",
+      "ListIndex",
+      "searchKey"
     ]),
 
   },
   methods: {
     ...mapActions(["SETSEARCHSTATE", "SETRECOMMENTDATA", "SETUSERINFOSTATE","SETPLAYS"]),
-    ...mapMutations(["setplayState","setplayList","setcurrenPlayList","setplayModel","setplayIndex","setfullScreen","setsongListState"]),
+    ...mapMutations(["setplayState","setplayList","setcurrenPlayList","setplayModel","setplayIndex","setfullScreen","setsongListState","setlyricObj","setListIndex","setsearchKey"]),
     // 计算播放量
     CountCal(value) {
       let play = "";

@@ -54,29 +54,7 @@
             </li>
           </ul>
         </div>
-        <ul class="songList">
-          <li class="item" v-for="(item,index) in songDetialList.tracks" :key="index">
-            <div class="itemLeft">
-              <span class="order">{{index+1}}</span>
-              <div class="songitem" @click="getSongDetial(index)">
-                <p class="songitemtitle">
-                  <span class="title">{{item.name}}</span>
-                  <span v-if="item.alia.length">({{item.alia[0]}})</span>
-                </p>
-                <p class="sign">
-                  <span class="vip signitem" v-if="item.cp=='0'">VIP</span>
-                  <span class="exclusive signitem" v-if="item.mark!='0'">独家</span>
-                  <span class="SQ signitem" v-if="item.fee=='8'">SQ</span>
-                  <span class="singer">{{item.ar[0].name}}-{{item.al.name}}</span>
-                </p>
-              </div>
-            </div>
-            <div class="itemRight">
-              <span class="iconfont icon" v-show="item.mv!='0'">&#xe7d5;</span>
-              <span class="iconfont icon">&#xe634;</span>
-            </div>
-          </li>
-        </ul>
+        <SongList :orderShow="true"  :songList="songDetialList.tracks" />
         <div class="subscribe-warper">
           <div class="subscribers">
             <img
@@ -103,6 +81,7 @@ import Scroll from "../common/scroll";
 import UserInfo from "../find/userInfo";
 import MusicMixins from "../../store/mixins";
 import FadeIn from "../transition/fadeIn";
+import SongList from "../search/songList";
 
 export default {
   name: "song",
@@ -122,7 +101,8 @@ export default {
     Header,
     Scroll,
     UserInfo,
-    FadeIn
+    FadeIn,
+    SongList
   },
   computed: {
     playCount() {
@@ -160,37 +140,44 @@ export default {
     getSongUrlData(id, listId) {
       this.$httpget("song/url?id=" + id).then(res => {
         let data = res.data.data[0];
-        let songUrlData = [];
-        this.$httpget("lyric?id=" + id).then(res1 => {
-          let lyric = res1.data.lrc.lyric;
-          lyric = lyric.replace(/\[(\w*\:\w*)\.\w*\]|\-/g, "");
-          songUrlData.push({
-            id: data.id /* 歌曲的id */,
-            url: data.url /* 歌曲的播放地址 */,
-            br: data.br /* 音质 */,
-            size: data.size /* 文件大小 */,
-            songname: this.songList[listId].name /* 歌曲名字 */,
-            CD: this.songList[listId].al.picUrl /* 光盘背景 */,
-            authorname: this.songList[listId].ar[0].name /* 演唱者名字 */,
-            lrc: lyric /* 歌词 */,
-            dt: this.songList[listId].dt /* 歌曲时长 */
-          });
-          localStorage.setItem(
-            "playList",
-            JSON.stringify(this.playList.concat(songUrlData))
-          );
-          localStorage.setItem("playIndex", this.playList.length);
-          this.setplayIndex(this.playList.length);
-          this.setplayList(this.playList.concat(songUrlData));
-          this.setplayState(true);
-          this.setfullScreen(true);
-        });
+        this.setCurrenSong(songUrlData);
+        // this.$httpget("lyric?id=" + id).then(res1 => {
+        //   let lyr = res1.data.lrc;
+        //   let lyric;
+        //   if (!lyr) {
+        //     lyric = "";
+        //   } else {
+        //     lyric = new Lyric(lyr.lyric, hanlder);
+        //   }
+        //   function hanlder({ lineNum, txt }) {
+        //     console.log(txt);
+        //   }
+        // });
+
+        // songUrlData.push({
+        //   id: data.id /* 歌曲的id */,
+        //   url: data.url /* 歌曲的播放地址 */,
+        //   br: data.br /* 音质 */,
+        //   size: data.size /* 文件大小 */,
+        //   songname: this.songList[listId].name /* 歌曲名字 */,
+        //   CD: this.songList[listId].al.picUrl /* 光盘背景 */,
+        //   authorname: this.songList[listId].ar[0].name /* 演唱者名字 */,
+        //   // lrc: lyric.lines /* 歌词 */,
+        //   dt: this.songList[listId].dt /* 歌曲时长 */
+        // });
+        // localStorage.setItem(
+        //   "playList",
+        //   JSON.stringify(this.playList.concat(songUrlData))
+        // );
+        // localStorage.setItem("playIndex", this.playList.length);
+        // this.setplayIndex(this.playList.length);
+        // this.setplayList(this.playList.concat(songUrlData));
+        // // this.setlyricObj(lyric);
+        // this.setplayState(true);
+        // this.setfullScreen(true);
       });
     },
-    getSongDetial(id) {
-      let songId = this.songList[id].id;
-      this.getSongUrlData(songId, id);
-    }
+
   },
   mounted() {
     let id = this.$route.params.id;
@@ -333,61 +320,7 @@ export default {
         }
       }
     }
-    .songList {
-      width: 100%;
-      background: #fff;
-      border-radius: 20px;
-      .item {
-        padding: 10px 14px;
-        display: flex;
-        justify-content: space-between;
-        .itemLeft {
-          display: flex;
-          align-items: center;
-          .order {
-            font-size: 15px;
-            font-weight: 700;
-            color: #aaa;
-            margin-right: 14px;
-          }
-          .songitem {
-            .songitemtitle {
-              font-size: 15px;
-            }
-            .sign {
-              font-size: 12px;
-              color: #ccc;
-              margin-top: 7px;
 
-              .signitem {
-                padding: 1px 2px;
-                border: 1px solid red;
-                border-radius: 4px;
-                margin-right: 4px;
-                color: #f00;
-                font-size: 10px;
-              }
-              .vip {
-              }
-              .SQ {
-              }
-              .exclusive {
-              }
-              .singer {
-              }
-            }
-          }
-        }
-        .itemRight {
-          display: flex;
-          align-items: center;
-          .icon {
-            margin-left: 14px;
-            width: 25px;
-          }
-        }
-      }
-    }
     .subscribe-warper {
       display: flex;
       align-items: center;

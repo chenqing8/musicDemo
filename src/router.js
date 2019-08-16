@@ -16,6 +16,16 @@ export default new Router({
       component: () => import('./views/songDetial.vue'),
     },
     {
+      path:'/search',
+      name:'search',
+      component: () => import('./views/search.vue'),
+    },
+    {
+      path:'/searchResult/:key',
+      name:'searchResult',
+      component: () => import('./components/search/searchResult.vue'),
+    },
+    {
       path: '/find',
       name: 'find',
       component: () => import('./views/find.vue'),

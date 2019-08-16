@@ -7,7 +7,10 @@ const song = {
     playModel: 0,
     playIndex:-1,
     fullScreen:false,
-    songListState:false
+    songListState:false,
+    lyricObj:null,
+    ListIndex:0,
+    searchKey:''
   },
   mutations: {
     'setplayState'(state, data) {
@@ -30,6 +33,15 @@ const song = {
     },
     'setsongListState'(state, data) {
       state.songListState = data;
+    },
+    'setlyricObj'(state, data) {
+      state.lyricObj = data;
+    },
+    'setListIndex'(state, data) {
+      state.ListIndex = data;
+    },
+    'setsearchKey'(state, data) {
+      state.searchKey = data;
     }
   },
   actions: {
@@ -55,6 +67,9 @@ const song = {
     playIndex: (state) => state.playIndex,
     fullScreen: (state) => state.fullScreen,
     songListState: (state) => state.songListState,
+    lyricObj: (state) => state.lyricObj,
+    ListIndex: (state) => state.ListIndex,
+    searchKey: (state) => state.searchKey,
   }
 }
 export default song;

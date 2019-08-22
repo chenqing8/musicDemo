@@ -61,13 +61,9 @@ export default {
         font-size: 12px;
         font-weight: 500;
         overflow: hidden;
-
         text-overflow: ellipsis;
-
         display: -webkit-box;
-
         -webkit-box-orient: vertical;
-
         -webkit-line-clamp: 2;
       }
       .vedio_des {

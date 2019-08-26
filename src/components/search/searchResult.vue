@@ -1,9 +1,8 @@
 <!--
  * @Description: In User Settings Edit
-
  * @Author: your name
  * @Date: 2019-08-16 21:51:49
- * @LastEditTime: 2019-08-19 23:17:46
+ * @LastEditTime: 2019-08-26 17:21:55
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -221,7 +220,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     font-size: 14px;
-    margin: 10px 0;
+    margin-top: 10px;
     .text {
       font-weight: 700;
     }

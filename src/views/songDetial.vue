@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 21:51:49
- * @LastEditTime: 2019-08-19 22:18:49
+ * @LastEditTime: 2019-08-26 17:27:21
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -26,7 +26,7 @@
             <span class="iconfont icon">&#xe60f;</span>
           </div>
           <div v-show="!lrcState" @click="lrcState=true" class="CD_warper">
-            <img :class="pointer"  alt />
+            <img :class="pointer" src="../assets/img/needle-ip6.png" alt />
             <div :class="CDbox">
               <img class="CD" :src="songData.CD" alt />
             </div>
@@ -75,7 +75,7 @@
           </SideUp>
         </div>
       </div>
-    <audio ref="audio"  @timeupdate="timeUpData" @ended="ended" :loop="loop"></audio>
+    <audio ref="audio" :src="songData.url" @timeupdate="timeUpData" @ended="ended" :loop="loop"></audio>
   </div>
 </template>
 
@@ -210,6 +210,7 @@ export default {
         this.$refs.range.style.backgroundSize = `${this.progrose}%, 100%`;
       }
     },
+
     /**audio自带的判断歌曲结束函数
      * @name: ended
      * @param {null}
@@ -265,6 +266,7 @@ export default {
         });
       // }
     },
+
   }
 };
 </script>

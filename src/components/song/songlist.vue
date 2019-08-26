@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!--
  * @Description: In User Settings Edit
  * @Author: your name
@@ -5,6 +6,8 @@
  * @LastEditTime: 2019-08-17 22:11:41
  * @LastEditors: Please set LastEditors
  -->
+=======
+>>>>>>> b1c31029303048690cefa0b2726a3a2e74902812
 <template>
   <div class="songlist">
     <div class="bg" @click="close" v-if="songListState"></div>
@@ -67,7 +70,11 @@ export default {
   right: 0;
   left: 0;
   top: 0;
+<<<<<<< HEAD
   z-index: 128;
+=======
+  z-index: 108;
+>>>>>>> b1c31029303048690cefa0b2726a3a2e74902812
   .bg {
     position: fixed;
     top: 0;
@@ -85,7 +92,11 @@ export default {
     background: #fff;
     color: #000;
     border-radius: 20px 20px 0 0;
+<<<<<<< HEAD
     z-index: 129;
+=======
+    z-index: 109;
+>>>>>>> b1c31029303048690cefa0b2726a3a2e74902812
     .title {
       font-size: 14px;
       font-weight: 700;

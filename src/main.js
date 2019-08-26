@@ -1,19 +1,20 @@
 /*
-//  * @Description: In User Settings Edit
+ * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 21:51:49
- * @LastEditTime: 2019-08-19 09:20:23
+ * @LastEditTime: 2019-08-26 17:23:44
  * @LastEditors: Please set LastEditors
  */
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/index'
 import Axios from 'axios'
 import VueLazyload from 'vue-lazyload'
-import $ from "jquery"
+import $ from "jquery";
 
-window.$=$
+window.$=$;
 Vue.use(VueLazyload, {
   preLoad: 1.3,
   error: 'public/favicon.ico',

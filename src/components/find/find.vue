@@ -23,23 +23,21 @@
 </template>
 
 <script>
-import Header from "../common/header";
-import HeaderLeft from "../find/headerLeft";
-import HeaderLeftFocuse from "../find/headerLeftFocuse";
-import MenuList from "../find/menuList";
-import SideRight from "../transition/sideRight";
-import Scroll from "../common/scroll";
-import RecommentList from "../find/recommentList";
-import { slider, slideritem } from "vue-concise-slider";
-import MusicMixins from "../../store/mixins";
+import Header from '../common/header';
+import HeaderLeft from '../find/headerLeft';
+import MenuList from '../find/menuList';
+import Scroll from '../common/scroll';
+import RecommentList from '../find/recommentList';
+import { slider, slideritem } from 'vue-concise-slider';
+import MusicMixins from '../../store/mixins';
 
 export default {
-  name: "Find",
+  name: 'Find',
   mixins: [MusicMixins],
   data() {
     return {
-      icon: "\ue67b If You-jksd",
-      searchValue: "",
+      icon: '\ue67b If You-jksd',
+      searchValue: '',
       someList: [],
       bannerList: [],
       recommentList: [],
@@ -55,29 +53,29 @@ export default {
       },
       menuList: [
         {
-          icon: "\ue603",
-          name: "每日推荐",
-          route: "/find"
+          icon: '\ue603',
+          name: '每日推荐',
+          route: '/find'
         },
         {
-          icon: "\ue737",
-          name: "歌单",
-          route: "/find"
+          icon: '\ue737',
+          name: '歌单',
+          route: '/find'
         },
         {
-          icon: "\ue60e",
-          name: "排行榜",
-          route: "/find"
+          icon: '\ue60e',
+          name: '排行榜',
+          route: '/find'
         },
         {
-          icon: "\ue715",
-          name: "电台",
-          route: "/find"
+          icon: '\ue715',
+          name: '电台',
+          route: '/find'
         },
         {
-          icon: "\ue606",
-          name: "直播",
-          route: "/find"
+          icon: '\ue606',
+          name: '直播',
+          route: '/find'
         }
       ]
     };
@@ -85,8 +83,6 @@ export default {
   components: {
     Header,
     HeaderLeft,
-    HeaderLeftFocuse,
-    SideRight,
     Scroll,
     slider,
     slideritem,
@@ -96,16 +92,16 @@ export default {
   computed: {},
   methods: {
     onTap(data) {
-      window.history.pushState(url);
+      window.history.pushState(data);
     },
-    slide(data) {},
-    /**获取banner数据
+    slide(data) { },
+    /** 获取banner数据
      * @name: getbannerData
      * @param {null}
      * @return:this.someList
      */
     getbannerData() {
-      this.$httpget("/banner?type=2").then(res => {
+      this.$httpget('/banner?type=2').then(res => {
         if (res.code === 200) {
           return;
         }
@@ -116,8 +112,8 @@ export default {
           item = {
             style: {
               background: `url(${element.pic})`,
-              borderRadius: "5px",
-              backgroundSize: "100% 100%"
+              borderRadius: '5px',
+              backgroundSize: '100% 100%'
             }
           };
           this.someList.push(item);
@@ -125,7 +121,7 @@ export default {
       });
     },
     getrecommentData() {
-      this.$httpget("/personalized").then(res => {
+      this.$httpget('/personalized').then(res => {
         if (res.code === 200) {
           return;
         }

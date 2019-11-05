@@ -2,9 +2,10 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 21:51:49
- * @LastEditTime: 2019-08-19 23:21:46
+ * @LastEditTime: 2019-08-26 17:19:57
  * @LastEditors: Please set LastEditors
  -->
+
 <template>
   <div class="headerLeftFocuse">
     <SideRight>
@@ -25,16 +26,16 @@
 
 
 <script>
-import SideRight from "../transition/sideRight";
-import MusicMixins from "../../store/mixins";
+import SideRight from '../transition/sideRight';
+import MusicMixins from '../../store/mixins';
 
 export default {
-  name: "headerLeftFocuse",
+  name: 'headerLeftFocuse',
   mixins: [MusicMixins],
   data() {
     return {
-      icon: "\ue67b If You-jksd" /* search框提示语 */,
-      searchValue: ""
+      icon: '\ue67b If You-jksd' /* search框提示语 */,
+      searchValue: ''
     };
   },
   components: {
@@ -46,10 +47,10 @@ export default {
       // this.searchValue = event.currentTarget.value;
     },
     changeState() {
-      this.$router.push({name:'home'})
+      this.$router.push({name: 'home'});
       setTimeout(() => {
         this.SETSEARCHSTATE(false);
-        this.setsearchKey("");
+        this.setsearchKey('');
       }, 20);
     },
     changeInput() {
@@ -61,7 +62,7 @@ export default {
   watch: {
     /* 当 searchState真，则聚焦input */
     searchState(now, old) {
-      if (now == true) {
+      if (now === true) {
         this.$nextTick(() => {
           this.$refs.search.focus();
         });

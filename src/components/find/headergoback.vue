@@ -9,8 +9,8 @@
 
 <script>
 export default {
-  name: "headergoback",
-  props: ["title", "goback"],/* goback有值表示跳转到指定路由，没值表示返回上一页 */
+  name: 'headergoback',
+  props: ['title', 'goback'], /* goback有值表示跳转到指定路由，没值表示返回上一页 */
   data() {
     return {};
   },
@@ -18,7 +18,7 @@ export default {
   computed: {},
   methods: {
     gobackItem() {
-      if (this.goback == undefined) {
+      if (this.goback === undefined) {
         this.go();
       } else {
         this.goBack();

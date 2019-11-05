@@ -2,8 +2,8 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 21:51:49
- * @LastEditTime: 2019-08-19 22:56:07
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2019-08-16 21:51:49
+ * @LastEditors: your name
  */
 import {
   mapGetters,

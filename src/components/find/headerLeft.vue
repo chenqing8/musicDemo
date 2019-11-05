@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import SideRight from "../transition/sideRight";
-import MusicMixins from "../../store/mixins";
+import SideRight from '../transition/sideRight';
+import MusicMixins from '../../store/mixins';
 export default {
-  name: "headerLeft",
+  name: 'headerLeft',
   mixins: [MusicMixins],
   data() {
     return {
-      icon: "\ue67b If You-jksd" /* search框提示语 */
+      icon: '\ue67b If You-jksd' /* search框提示语 */
     };
   },
   components: {
@@ -26,7 +26,7 @@ export default {
   computed: {},
   methods: {
     changeState() {
-      this.$router.push({ name: "search" });
+      this.$router.push({ name: 'search' });
       setTimeout(() => {
         this.SETSEARCHSTATE(true);
       }, 20);

@@ -2,11 +2,16 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 21:51:49
+<<<<<<< HEAD
  * @LastEditTime: 2019-09-09 09:39:19
+=======
+ * @LastEditTime: 2019-08-26 17:27:21
+>>>>>>> 76f541d32e6c4943320d14302c996796629606c8
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="songDetial" v-if="songData">
+<<<<<<< HEAD
     <div v-if="fullScreen">
       <div class="bgParent">
         <div
@@ -22,6 +27,48 @@
           <div class="title_warper">
             <span class="title">{{songData.songname}}</span>
             <span class="author">{{songData.authorname}}</span>
+=======
+      <div v-if="fullScreen">
+        <div class="bgParent">
+          <div
+            class="bg"
+            v-if="songData.CD"
+            :style="{'background-image':'url('+songData.CD+')','backgroundSize': '100% 100%', 'filter': 'blur(15px)'}"
+          ></div>
+          <div class="bgShadow"></div>
+        </div>
+        <div class="songDetial_warper">
+          <div class="header_warper">
+            <span class="iconfont icon" @click="goBack">&#xe641;</span>
+            <div class="title_warper">
+              <span class="title">{{songData.songname}}</span>
+              <span class="author">{{songData.authorname}}</span>
+            </div>
+            <span class="iconfont icon">&#xe60f;</span>
+          </div>
+          <div v-show="!lrcState" @click="lrcState=true" class="CD_warper">
+            <img :class="pointer" src="../assets/img/needle-ip6.png" alt />
+            <div :class="CDbox">
+              <img class="CD" :src="songData.CD" alt />
+            </div>
+          </div>
+          <div v-show="lrcState" @click="lrcState=false" class="lrc_warper">
+            <div class="lrcText" ref="lyricList">
+              <p
+                v-for="(item,index) in lyricList"
+                :key="index"
+                :class="{'active':lrcIndex==index}"
+                ref="lyricItem"
+              >{{item.txt}}</p>
+            </div>
+          </div>
+          <div class="menu_warper">
+            <span class="iconfont icon">&#xe60a;</span>
+            <span class="iconfont icon">&#xe628;</span>
+            <span class="iconfont icon">&#xe600;</span>
+            <span class="iconfont icon">&#xe6d3;</span>
+            <span class="iconfont icon">&#xe634;</span>
+>>>>>>> 76f541d32e6c4943320d14302c996796629606c8
           </div>
           <span class="iconfont icon">&#xe60f;</span>
         </div>
@@ -74,8 +121,12 @@
           <SongList :playlist="playList" :playindex="playIndex" v-if="songListState"></SongList>
         </SideUp>
       </div>
+<<<<<<< HEAD
     </div>
     <audio ref="audio" @timeupdate="timeUpData" @ended="ended" :loop="loop"></audio>
+=======
+    <audio ref="audio" :src="songData.url" @timeupdate="timeUpData" @ended="ended" :loop="loop"></audio>
+>>>>>>> 76f541d32e6c4943320d14302c996796629606c8
   </div>
 </template>
 
@@ -209,6 +260,7 @@ export default {
         this.$refs.range.style.backgroundSize = `${this.progrose}%, 100%`;
       }
     },
+
     /**audio自带的判断歌曲结束函数
      * @name: ended
      * @param {null}
@@ -260,10 +312,23 @@ export default {
       this.lrcState = false;
     },
     playIndex() {
+<<<<<<< HEAD
       console.log(1234);
       this.getsongUrlData();
       this.getLyricData();
     }
+=======
+      // if (this.playState) {
+        this.$nextTick(() => {
+          this.getsongUrlData();
+          this.getLyricData();
+          this.$refs.audio.src=this.songData.url;
+          this.$refs.audio.play();
+        });
+      // }
+    },
+
+>>>>>>> 76f541d32e6c4943320d14302c996796629606c8
   }
 };
 </script>

@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 21:51:49
+ * @LastEditTime: 2019-09-06 18:03:00
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="songList">
     <ul class="songList">
@@ -42,7 +49,6 @@ export default {
     getSongDetial(id) {
       this.setplayState(true);
       this.setfullScreen(true);
-
       let songId = this.songList[id].id;
       localStorage.setItem("playList", JSON.stringify(this.songList));
       localStorage.setItem("playIndex", songId);

@@ -2,80 +2,80 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-08-16 21:51:49
- * @LastEditTime: 2019-08-19 22:18:49
+ * @LastEditTime: 2019-09-09 09:39:19
  * @LastEditors: Please set LastEditors
  -->
 <template>
   <div class="songDetial" v-if="songData">
-      <div v-if="fullScreen">
-        <div class="bgParent">
-          <div
-            class="bg"
-            v-if="songData.CD"
-            :style="{'background-image':'url('+songData.CD+')','backgroundSize': '100% 100%', 'filter': 'blur(15px)'}"
-          ></div>
-          <div class="bgShadow"></div>
-        </div>
-        <div class="songDetial_warper">
-          <div class="header_warper">
-            <span class="iconfont icon" @click="goBack">&#xe641;</span>
-            <div class="title_warper">
-              <span class="title">{{songData.songname}}</span>
-              <span class="author">{{songData.authorname}}</span>
-            </div>
-            <span class="iconfont icon">&#xe60f;</span>
-          </div>
-          <div v-show="!lrcState" @click="lrcState=true" class="CD_warper">
-            <img :class="pointer"  alt />
-            <div :class="CDbox">
-              <img class="CD" :src="songData.CD" alt />
-            </div>
-          </div>
-          <div v-show="lrcState" @click="lrcState=false" class="lrc_warper">
-            <div class="lrcText" ref="lyricList">
-              <p
-                v-for="(item,index) in lyricList"
-                :key="index"
-                :class="{'active':lrcIndex==index}"
-                ref="lyricItem"
-              >{{item.txt}}</p>
-            </div>
-          </div>
-          <div class="menu_warper">
-            <span class="iconfont icon">&#xe60a;</span>
-            <span class="iconfont icon">&#xe628;</span>
-            <span class="iconfont icon">&#xe600;</span>
-            <span class="iconfont icon">&#xe6d3;</span>
-            <span class="iconfont icon">&#xe634;</span>
-          </div>
-          <div class="songPro_warper">
-            <span class="time">{{timeFormat(currentTime)}}</span>
-            <input
-              class="range"
-              type="range"
-              ref="range"
-              min="0"
-              max="100"
-              step="1"
-              :value="progrose"
-              @change="onProgressChange($event.target.value)"
-              @input="onProgressInput($event.target.value)"
-            />
-            <span class="time">{{jsDateTimeFormat(songData.dt)}}</span>
-          </div>
-          <div class="songMenu_warper">
-            <span class="iconfont icon" @click="playingModel">{{modelList[playModel]}}</span>
-            <span class="iconfont icon" @click="perSong(ListIndex)">&#xe78a;</span>
-            <span class="iconfont play" @click="playing">{{playIcon}}</span>
-            <span class="iconfont icon" @click="nextSong(ListIndex)">&#xe7a5;</span>
-            <span class="iconfont icon" @click="setsongListState(true)">&#xe737;</span>
-          </div>
-          <SideUp>
-            <SongList :playlist="playList" :playindex="playIndex" v-if="songListState"></SongList>
-          </SideUp>
-        </div>
+    <div v-if="fullScreen">
+      <div class="bgParent">
+        <div
+          class="bg"
+          v-if="songData.CD"
+          :style="{'background-image':'url('+songData.CD+')','backgroundSize': '100% 100%', 'filter': 'blur(15px)'}"
+        ></div>
+        <div class="bgShadow"></div>
       </div>
-    <audio ref="audio"  @timeupdate="timeUpData" @ended="ended" :loop="loop"></audio>
+      <div class="songDetial_warper">
+        <div class="header_warper">
+          <span class="iconfont icon" @click="goBack">&#xe641;</span>
+          <div class="title_warper">
+            <span class="title">{{songData.songname}}</span>
+            <span class="author">{{songData.authorname}}</span>
+          </div>
+          <span class="iconfont icon">&#xe60f;</span>
+        </div>
+        <div v-show="!lrcState" @click="lrcState=true" class="CD_warper">
+          <img :class="pointer" alt />
+          <div :class="CDbox">
+            <img class="CD" :src="songData.CD" alt />
+          </div>
+        </div>
+        <div v-show="lrcState" @click="lrcState=false" class="lrc_warper">
+          <div class="lrcText" ref="lyricList">
+            <p
+              v-for="(item,index) in lyricList"
+              :key="index"
+              :class="{'active':lrcIndex==index}"
+              ref="lyricItem"
+            >{{item.txt}}</p>
+          </div>
+        </div>
+        <div class="menu_warper">
+          <span class="iconfont icon">&#xe60a;</span>
+          <span class="iconfont icon">&#xe628;</span>
+          <span class="iconfont icon">&#xe600;</span>
+          <span class="iconfont icon">&#xe6d3;</span>
+          <span class="iconfont icon">&#xe634;</span>
+        </div>
+        <div class="songPro_warper">
+          <span class="time">{{timeFormat(currentTime)}}</span>
+          <input
+            class="range"
+            type="range"
+            ref="range"
+            min="0"
+            max="100"
+            step="1"
+            :value="progrose"
+            @change="onProgressChange($event.target.value)"
+            @input="onProgressInput($event.target.value)"
+          />
+          <span class="time">{{jsDateTimeFormat(songData.dt)}}</span>
+        </div>
+        <div class="songMenu_warper">
+          <span class="iconfont icon" @click="playingModel">{{modelList[playModel]}}</span>
+          <span class="iconfont icon" @click="perSong(ListIndex)">&#xe78a;</span>
+          <span class="iconfont play" @click="playing">{{playIcon}}</span>
+          <span class="iconfont icon" @click="nextSong(ListIndex)">&#xe7a5;</span>
+          <span class="iconfont icon" @click="setsongListState(true)">&#xe737;</span>
+        </div>
+        <SideUp>
+          <SongList :playlist="playList" :playindex="playIndex" v-if="songListState"></SongList>
+        </SideUp>
+      </div>
+    </div>
+    <audio ref="audio" @timeupdate="timeUpData" @ended="ended" :loop="loop"></audio>
   </div>
 </template>
 
@@ -110,24 +110,23 @@ export default {
   },
   computed: {
     playIcon() {
-      return this.playState ? '\ue670' : '\ue626';
+      return this.playState ? "\ue670" : "\ue626";
     },
     CDbox() {
-      return this.playState ? 'CDbox' : 'CDbox pause';
+      return this.playState ? "CDbox" : "CDbox pause";
     },
     pointer() {
-      return this.playState ? 'pointer' : 'pointer pointerrotate';
+      return this.playState ? "pointer" : "pointer pointerrotate";
     }
   },
   methods: {
     playing() {
+      this.lyric.togglePlay();
       if (this.playState) {
         this.$refs.audio.pause();
-        this.lyric.togglePlay();
         this.setplayState(false);
       } else {
         this.$refs.audio.play();
-        this.lyric.togglePlay();
         this.setplayState(true);
       }
     },
@@ -235,6 +234,7 @@ export default {
     },
     getsongUrlData() {
       this.$httpget("song/url?id=" + this.playIndex).then(res => {
+        console.log(this.playIndex);
         let data = res.data.data[0];
         this.songData = {
           id: data.id /* 歌曲的id */,
@@ -246,25 +246,24 @@ export default {
           authorname: this.playList[this.ListIndex].ar[0].name /* 演唱者名字 */,
           dt: this.playList[this.ListIndex].dt /* 歌曲时长 */
         };
+        this.$refs.audio.src = data.url;
+        if (this.playState) {
+          this.$nextTick(() => {
+            this.$refs.audio.play();
+          });
+        }
       });
     }
   },
   watch: {
     fullScreen() {
       this.lrcState = false;
-      this.getsongUrlData();
-      this.getLyricData();
     },
     playIndex() {
-      // if (this.playState) {
-        this.$nextTick(() => {
-          this.getsongUrlData();
-          this.getLyricData();
-          this.$refs.audio.src=this.songData.url;
-          this.$refs.audio.play();
-        });
-      // }
-    },
+      console.log(1234);
+      this.getsongUrlData();
+      this.getLyricData();
+    }
   }
 };
 </script>
@@ -301,7 +300,7 @@ export default {
       -o-transform: scale(2, 2);
       background-size: 100% 100%;
       background-origin: center;
-    z-index: 120;
+      z-index: 120;
       background: #aaa;
     }
     .bgShadow {
@@ -310,7 +309,7 @@ export default {
       right: 0;
       left: 0;
       bottom: 0;
-    z-index: 121;
+      z-index: 121;
       background: rgba($color: #888, $alpha: 0.4);
     }
   }
@@ -356,7 +355,6 @@ export default {
         z-index: 122;
         background-image: url("../assets/img/needle-ip6.png");
         background-size: 100% 100%;
-
       }
       .pointerrotate {
         transform-origin: 10px 0;

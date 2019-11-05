@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 21:51:49
+ * @LastEditTime: 2019-09-06 18:39:11
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div class="song">
     <Header>
@@ -177,17 +184,18 @@ export default {
         // this.setfullScreen(true);
       });
     },
-
   },
   mounted() {
     let id = this.$route.params.id;
     this.getSongListData(id);
+    if(this.playState && this.fullScreen){
     let platList = JSON.parse(localStorage.getItem("playList"));
-    let platIndex = localStorage.getItem("playIndex");
+    let platIndex = parseInt(localStorage.getItem("playIndex"));
     if (platList) this.setplayList(platList);
     else this.setplayList([]);
     if (platIndex) this.setplayIndex(platIndex);
     else this.setplayIndex(-1);
+    }
   }
 };
 </script>

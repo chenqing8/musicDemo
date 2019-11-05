@@ -1,11 +1,16 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-16 21:51:49
+ * @LastEditTime: 2019-09-06 18:21:55
+ * @LastEditors: Please set LastEditors
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
   routes: [{
       path: '/',
       redirect: '/find'
